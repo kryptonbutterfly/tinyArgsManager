@@ -1,4 +1,4 @@
-package de.imayro.args;
+package de.tinycodecrank.args;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

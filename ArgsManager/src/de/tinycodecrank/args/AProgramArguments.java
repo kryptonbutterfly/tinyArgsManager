@@ -1,4 +1,4 @@
-package de.imayro.args;
+package de.tinycodecrank.args;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
