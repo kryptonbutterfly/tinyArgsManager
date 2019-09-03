@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 
+import de.tinycodecrank.utils.nullable.Optional;
+
 //import de.dummy.logger.Logger;
 
 public abstract class AProgramArguments
@@ -149,13 +151,13 @@ public abstract class AProgramArguments
 		{
 			for (Field field : this.getClass().getDeclaredFields())
 			{
-				Argument argument = field.getAnnotation(Argument.class);
-				this.validate(arg, args, argument);
+				Optional.of(field.getAnnotation(Argument.class))
+					.peek(argument -> this.validate(arg, args, argument));
 			}
 			for (Method method : this.getClass().getDeclaredMethods())
 			{
-				Argument argument = method.getAnnotation(Argument.class);
-				this.validate(arg, args, argument);
+				Optional.of(method.getAnnotation(Argument.class))
+					.peek(argument -> this.validate(arg, args, argument));
 			}
 		}
 	}
@@ -163,7 +165,7 @@ public abstract class AProgramArguments
 	private final void validate(String arg, List<String> args, Argument argument)
 	{
 		String s = Argument.requiresMinusAtIdentifier ? "-" : "";
-		if (argument != null && argument.name().equals(arg))
+		if (argument.name().equals(arg))
 		{
 			for (String required : argument.requires())
 			{
@@ -195,19 +197,15 @@ public abstract class AProgramArguments
 		String s = Argument.requiresMinusAtIdentifier ? "-" : "";
 		for (Field field : this.getClass().getDeclaredFields())
 		{
-			Argument argument = field.getAnnotation(Argument.class);
-			if (argument != null)
-			{
-				System.out.println(s + argument.name() + "\t" + argument.info());
-			}
+			Optional.of(field.getAnnotation(Argument.class))
+				.peek(argument ->
+					System.out.println(s + argument.name() + "\t" + argument.info()));
 		}
 		for (Method method : this.getClass().getDeclaredMethods())
 		{
-			Argument argument = method.getAnnotation(Argument.class);
-			if (argument != null)
-			{
-				System.out.println(s + argument.name() + "\t" + argument.info());
-			}
+			Optional.of(method.getAnnotation(Argument.class))
+				.peek(argument ->
+					System.out.println(s + argument.name() + "\t" + argument.info()));
 		}
 	}
 
@@ -269,12 +267,11 @@ public abstract class AProgramArguments
 					{
 						if (field.getType() != boolean.class)
 						{
-							Function<Iterator<String>, ?> parser = allParser.get(field.getType());
-							if (parser == null)
-							{
-								throw new NullPointerException("Couldn't find a parser for " + field.getType() + "! Please register one.");
-							}
-							field.set(this, parser.apply(iterator));
+							Optional.of(allParser.get(field.getType()))
+								.ifOrElse(parser -> parser.apply(iterator),
+									() -> {
+										throw new NullPointerException("Couldn't find a parser for " + field.getType() + "! Please register one.");
+									});
 						}
 						else
 						{
@@ -310,12 +307,12 @@ public abstract class AProgramArguments
 						Object [] parameter = new Object [paramTypes.length];
 						for (int i = 0; i < paramTypes.length; i++)
 						{
-							Function<Iterator<String>, ?> parser = allParser.get(paramTypes[i]);
-							if (parser == null)
-							{
-								throw new NullPointerException("Couldn't find a parser for " + paramTypes[i] + "! Please register one.");
-							}
-							parameter[i] = parser.apply(iterator);
+							final int index = i;
+							Optional.of(allParser.get(paramTypes[index]))
+								.ifOrElse(parser -> parameter[index] = parser.apply(iterator),
+									() -> {
+										throw new NullPointerException("Couldn't find a parser for " + paramTypes[index] + "! Please register one.");
+									});
 						}
 						method.invoke(this, parameter);
 						return true;
