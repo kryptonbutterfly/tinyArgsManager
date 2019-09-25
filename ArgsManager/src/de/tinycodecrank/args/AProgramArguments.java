@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 
-import de.tinycodecrank.utils.nullable.Optional;
+import de.tinycodecrank.utils.nullable.Opt;
 
 //import de.dummy.logger.Logger;
 
@@ -151,13 +151,13 @@ public abstract class AProgramArguments
 		{
 			for (Field field : this.getClass().getDeclaredFields())
 			{
-				Optional.of(field.getAnnotation(Argument.class))
-					.peek(argument -> this.validate(arg, args, argument));
+				Opt.of(field.getAnnotation(Argument.class))
+					.if_(argument -> this.validate(arg, args, argument));
 			}
 			for (Method method : this.getClass().getDeclaredMethods())
 			{
-				Optional.of(method.getAnnotation(Argument.class))
-					.peek(argument -> this.validate(arg, args, argument));
+				Opt.of(method.getAnnotation(Argument.class))
+					.if_(argument -> this.validate(arg, args, argument));
 			}
 		}
 	}
@@ -197,14 +197,14 @@ public abstract class AProgramArguments
 		String s = Argument.requiresMinusAtIdentifier ? "-" : "";
 		for (Field field : this.getClass().getDeclaredFields())
 		{
-			Optional.of(field.getAnnotation(Argument.class))
-				.peek(argument ->
+			Opt.of(field.getAnnotation(Argument.class))
+				.if_(argument ->
 					System.out.println(s + argument.name() + "\t" + argument.info()));
 		}
 		for (Method method : this.getClass().getDeclaredMethods())
 		{
-			Optional.of(method.getAnnotation(Argument.class))
-				.peek(argument ->
+			Opt.of(method.getAnnotation(Argument.class))
+				.if_(argument ->
 					System.out.println(s + argument.name() + "\t" + argument.info()));
 		}
 	}
@@ -267,8 +267,8 @@ public abstract class AProgramArguments
 					{
 						if (field.getType() != boolean.class)
 						{
-							Optional.of(allParser.get(field.getType()))
-								.ifOrElse(parser -> parser.apply(iterator),
+							Opt.of(allParser.get(field.getType()))
+								.if_else(parser -> parser.apply(iterator),
 									() -> {
 										throw new NullPointerException("Couldn't find a parser for " + field.getType() + "! Please register one.");
 									});
@@ -308,8 +308,8 @@ public abstract class AProgramArguments
 						for (int i = 0; i < paramTypes.length; i++)
 						{
 							final int index = i;
-							Optional.of(allParser.get(paramTypes[index]))
-								.ifOrElse(parser -> parameter[index] = parser.apply(iterator),
+							Opt.of(allParser.get(paramTypes[index]))
+								.if_else(parser -> parameter[index] = parser.apply(iterator),
 									() -> {
 										throw new NullPointerException("Couldn't find a parser for " + paramTypes[index] + "! Please register one.");
 									});
