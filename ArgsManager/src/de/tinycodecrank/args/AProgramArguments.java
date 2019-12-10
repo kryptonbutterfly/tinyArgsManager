@@ -63,78 +63,116 @@ public abstract class AProgramArguments
 		addParser(boolean.class, value -> Boolean.parseBoolean(value.next()));
 		addParser(double.class, value -> Double.parseDouble(value.next()));
 		addParser(float.class, value -> Float.parseFloat(value.next()));
-		addParser(String [].class, value -> value.next().split(delimiter));
-		addParser(long [].class, value -> {
-			String [] split = value.next().split(delimiter);
-			long [] result = new long [split.length];
-			for (int i = 0; i < split.length; i++)
+		addParser(String [].class, value -> {
+			if(value.hasNext())
 			{
-				result[i] = Long.parseLong(split[i]);
+				return value.next().split(delimiter);
 			}
-			return result;
+			return new String[0];
+		});
+		addParser(long [].class, value -> {
+			if(value.hasNext())
+			{
+				String [] split = value.next().split(delimiter);
+				long [] result = new long [split.length];
+				for (int i = 0; i < split.length; i++)
+				{
+					result[i] = Long.parseLong(split[i]);
+				}
+				return result;
+			}
+			return new long[0];
 		});
 		addParser(int [].class, value -> {
-			String [] split = value.next().split(delimiter);
-			int [] result = new int [split.length];
-			for (int i = 0; i < split.length; i++)
+			if(value.hasNext())
 			{
-				result[i] = Integer.parseInt(split[i]);
+				String [] split = value.next().split(delimiter);
+				int [] result = new int [split.length];
+				for (int i = 0; i < split.length; i++)
+				{
+					result[i] = Integer.parseInt(split[i]);
+				}
+				return result;
 			}
-			return result;
+			return new int[0];
 		});
 		addParser(short [].class, value -> {
-			String [] split = value.next().split(delimiter);
-			short [] result = new short [split.length];
-			for (int i = 0; i < split.length; i++)
+			if(value.hasNext())
 			{
-				result[i] = Short.parseShort(split[i]);
+				String [] split = value.next().split(delimiter);
+				short [] result = new short [split.length];
+				for (int i = 0; i < split.length; i++)
+				{
+					result[i] = Short.parseShort(split[i]);
+				}
+				return result;
 			}
-			return result;
+			return new short[0];
 		});
 		addParser(char [].class, value -> {
-			String [] split = value.next().split(delimiter);
-			char [] result = new char [split.length];
-			for (int i = 0; i < split.length; i++)
+			if(value.hasNext())
 			{
-				result[i] = split[i].charAt(0);
+				String [] split = value.next().split(delimiter);
+				char [] result = new char [split.length];
+				for (int i = 0; i < split.length; i++)
+				{
+					result[i] = split[i].charAt(0);
+				}
+				return result;
 			}
-			return result;
+			return new char[0];
 		});
 		addParser(byte [].class, value -> {
-			String [] split = value.next().split(delimiter);
-			byte [] result = new byte [split.length];
-			for (int i = 0; i < split.length; i++)
+			if(value.hasNext())
 			{
-				result[i] = Byte.parseByte(split[i]);
+				String [] split = value.next().split(delimiter);
+				byte [] result = new byte [split.length];
+				for (int i = 0; i < split.length; i++)
+				{
+					result[i] = Byte.parseByte(split[i]);
+				}
+				return result;
 			}
-			return result;
+			return new byte[0];
 		});
 		addParser(boolean [].class, value -> {
-			String [] split = value.next().split(delimiter);
-			boolean [] result = new boolean [split.length];
-			for (int i = 0; i < split.length; i++)
+			if(value.hasNext())
 			{
-				result[i] = Boolean.parseBoolean(split[i]);
+				String [] split = value.next().split(delimiter);
+				boolean [] result = new boolean [split.length];
+				for (int i = 0; i < split.length; i++)
+				{
+					result[i] = Boolean.parseBoolean(split[i]);
+				}
+				return result;
 			}
-			return result;
+			return new boolean[0];
 		});
 		addParser(double [].class, value -> {
-			String [] split = value.next().split(delimiter);
-			double [] result = new double [split.length];
-			for (int i = 0; i < split.length; i++)
+			if(value.hasNext())
 			{
-				result[i] = Double.parseDouble(split[i]);
+				String [] split = value.next().split(delimiter);
+				double [] result = new double [split.length];
+				for (int i = 0; i < split.length; i++)
+				{
+					result[i] = Double.parseDouble(split[i]);
+				}
+				return result;
 			}
-			return result;
+			return new double[0];
 		});
 		addParser(float [].class, value -> {
-			String [] split = value.next().split(delimiter);
-			float [] result = new float [split.length];
-			for (int i = 0; i < split.length; i++)
+			if(value.hasNext())
 			{
-				result[i] = Float.parseFloat(split[i]);
+				String [] split = value.next().split(delimiter);
+				float [] result = new float [split.length];
+				for (int i = 0; i < split.length; i++)
+				{
+					result[i] = Float.parseFloat(split[i]);
+				}
+				return result;
 			}
-			return result;
+			return new float[0];
 		});
 	}
 
@@ -267,11 +305,16 @@ public abstract class AProgramArguments
 					{
 						if (field.getType() != boolean.class)
 						{
-							Opt.of(allParser.get(field.getType()))
-								.if_else(parser -> parser.apply(iterator),
-									() -> {
-										throw new NullPointerException("Couldn't find a parser for " + field.getType() + "! Please register one.");
-									});
+							Object o = Opt.of(allParser.get(field.getType()))
+								.map(parser -> parser.apply(iterator)).getIgnore();
+							if(o != null)
+							{
+								field.set(this, o);
+							}
+							else
+							{
+								throw new NullPointerException("Couldn't find a parser for " + field.getType() + "! Please register one.");
+							}
 						}
 						else
 						{
