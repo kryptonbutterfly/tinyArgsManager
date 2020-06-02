@@ -306,14 +306,14 @@ public abstract class AProgramArguments
 						if (field.getType() != boolean.class)
 						{
 							Object o = Opt.of(allParser.get(field.getType()))
-								.map(parser -> parser.apply(iterator)).getIgnore();
+								.map(parser -> parser.apply(iterator)).get(() -> null);
 							if(o != null)
 							{
 								field.set(this, o);
 							}
 							else
 							{
-								throw new NullPointerException("Couldn't find a parser for " + field.getType() + "! Please register one.");
+								throw new NoSuchElementException("Couldn't find a parser for " + field.getType() + "! Please register one.");
 							}
 						}
 						else
@@ -352,9 +352,10 @@ public abstract class AProgramArguments
 						{
 							final int index = i;
 							Opt.of(allParser.get(paramTypes[index]))
-								.if_else(parser -> parameter[index] = parser.apply(iterator),
-									() -> {
-										throw new NullPointerException("Couldn't find a parser for " + paramTypes[index] + "! Please register one.");
+								.if_(parser -> parameter[index] = parser.apply(iterator))
+								.else_(() ->
+									{
+										throw new NoSuchElementException("Couldn't find a parser for " + paramTypes[index] + "! Please register one.");
 									});
 						}
 						method.invoke(this, parameter);
