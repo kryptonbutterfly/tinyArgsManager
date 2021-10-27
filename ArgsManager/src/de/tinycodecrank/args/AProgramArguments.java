@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 
-import de.tinycodecrank.utils.nullable.Opt;
+import de.tinycodecrank.monads.Opt;
 
 //import de.dummy.logger.Logger;
 
