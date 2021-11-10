@@ -17,16 +17,16 @@ import de.tinycodecrank.monads.Opt;
 
 public abstract class AProgramArguments
 {
-	private static final HashMap<Class<?>, Function<Iterator<String>, ?>> allParser = new HashMap<>();
-	private String programInfo = "";
-	private static String delimiter = "\\|";
-
-	protected AProgramArguments(String [] args, String programInfo)
+	private static final HashMap<Class<?>, Function<Iterator<String>, ?>>	allParser	= new HashMap<>();
+	private String															programInfo	= "";
+	private static String													delimiter	= "\\|";
+	
+	protected AProgramArguments(String[] args, String programInfo)
 	{
 		this.programInfo = programInfo;
-//		Logger.info("ArgsManager: adding default parser.");
+		// Logger.info("ArgsManager: adding default parser.");
 		this.addStandardParser();
-//		Logger.info("ArgsManager: adding custom parser.");
+		// Logger.info("ArgsManager: adding custom parser.");
 		this.addAllParser();
 		try
 		{
@@ -34,24 +34,25 @@ public abstract class AProgramArguments
 		}
 		catch (IllegalArgumentException e)
 		{
-//			Logger.error(e);
+			// Logger.error(e);
 			System.out.println(e.getMessage());
 			System.out.println();
 			this.printInfo();
-//			Logger.trace("ArgsManager: Terminating application! - Not existing argument supplied!");
+			// Logger.trace("ArgsManager: Terminating application! - Not existing argument
+			// supplied!");
 			e.printStackTrace();
 			System.exit(-1);
 		}
 		catch (NoSuchElementException e)
 		{
-//			Logger.error(e);
+			// Logger.error(e);
 			this.printInfo();
-//			Logger.trace("ArgsManager: Terminating application!");
+			// Logger.trace("ArgsManager: Terminating application!");
 			e.printStackTrace();
 			System.exit(-1);
 		}
 	}
-
+	
 	private void addStandardParser()
 	{
 		addParser(String.class, value -> value.next());
@@ -63,18 +64,20 @@ public abstract class AProgramArguments
 		addParser(boolean.class, value -> Boolean.parseBoolean(value.next()));
 		addParser(double.class, value -> Double.parseDouble(value.next()));
 		addParser(float.class, value -> Float.parseFloat(value.next()));
-		addParser(String [].class, value -> {
-			if(value.hasNext())
+		addParser(String[].class, value ->
+		{
+			if (value.hasNext())
 			{
 				return value.next().split(delimiter);
 			}
 			return new String[0];
 		});
-		addParser(long [].class, value -> {
-			if(value.hasNext())
+		addParser(long[].class, value ->
+		{
+			if (value.hasNext())
 			{
-				String [] split = value.next().split(delimiter);
-				long [] result = new long [split.length];
+				String[]	split	= value.next().split(delimiter);
+				long[]		result	= new long[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Long.parseLong(split[i]);
@@ -83,11 +86,12 @@ public abstract class AProgramArguments
 			}
 			return new long[0];
 		});
-		addParser(int [].class, value -> {
-			if(value.hasNext())
+		addParser(int[].class, value ->
+		{
+			if (value.hasNext())
 			{
-				String [] split = value.next().split(delimiter);
-				int [] result = new int [split.length];
+				String[]	split	= value.next().split(delimiter);
+				int[]		result	= new int[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Integer.parseInt(split[i]);
@@ -96,11 +100,12 @@ public abstract class AProgramArguments
 			}
 			return new int[0];
 		});
-		addParser(short [].class, value -> {
-			if(value.hasNext())
+		addParser(short[].class, value ->
+		{
+			if (value.hasNext())
 			{
-				String [] split = value.next().split(delimiter);
-				short [] result = new short [split.length];
+				String[]	split	= value.next().split(delimiter);
+				short[]		result	= new short[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Short.parseShort(split[i]);
@@ -109,11 +114,12 @@ public abstract class AProgramArguments
 			}
 			return new short[0];
 		});
-		addParser(char [].class, value -> {
-			if(value.hasNext())
+		addParser(char[].class, value ->
+		{
+			if (value.hasNext())
 			{
-				String [] split = value.next().split(delimiter);
-				char [] result = new char [split.length];
+				String[]	split	= value.next().split(delimiter);
+				char[]		result	= new char[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = split[i].charAt(0);
@@ -122,11 +128,12 @@ public abstract class AProgramArguments
 			}
 			return new char[0];
 		});
-		addParser(byte [].class, value -> {
-			if(value.hasNext())
+		addParser(byte[].class, value ->
+		{
+			if (value.hasNext())
 			{
-				String [] split = value.next().split(delimiter);
-				byte [] result = new byte [split.length];
+				String[]	split	= value.next().split(delimiter);
+				byte[]		result	= new byte[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Byte.parseByte(split[i]);
@@ -135,11 +142,12 @@ public abstract class AProgramArguments
 			}
 			return new byte[0];
 		});
-		addParser(boolean [].class, value -> {
-			if(value.hasNext())
+		addParser(boolean[].class, value ->
+		{
+			if (value.hasNext())
 			{
-				String [] split = value.next().split(delimiter);
-				boolean [] result = new boolean [split.length];
+				String[]	split	= value.next().split(delimiter);
+				boolean[]	result	= new boolean[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Boolean.parseBoolean(split[i]);
@@ -148,11 +156,12 @@ public abstract class AProgramArguments
 			}
 			return new boolean[0];
 		});
-		addParser(double [].class, value -> {
-			if(value.hasNext())
+		addParser(double[].class, value ->
+		{
+			if (value.hasNext())
 			{
-				String [] split = value.next().split(delimiter);
-				double [] result = new double [split.length];
+				String[]	split	= value.next().split(delimiter);
+				double[]	result	= new double[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Double.parseDouble(split[i]);
@@ -161,11 +170,12 @@ public abstract class AProgramArguments
 			}
 			return new double[0];
 		});
-		addParser(float [].class, value -> {
-			if(value.hasNext())
+		addParser(float[].class, value ->
+		{
+			if (value.hasNext())
 			{
-				String [] split = value.next().split(delimiter);
-				float [] result = new float [split.length];
+				String[]	split	= value.next().split(delimiter);
+				float[]		result	= new float[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Float.parseFloat(split[i]);
@@ -175,16 +185,16 @@ public abstract class AProgramArguments
 			return new float[0];
 		});
 	}
-
+	
 	/**
-	 * Implement this method to supply custom parser.
-	 * This method will be called on creation of this object.
+	 * Implement this method to supply custom parser. This method will be called on
+	 * creation of this object.
 	 */
 	protected abstract void addAllParser();
-
+	
 	private final void validate(List<String> args)
 	{
-//		Logger.info("ArgsManager: Validating parsed program-arguments.");
+		// Logger.info("ArgsManager: Validating parsed program-arguments.");
 		for (String arg : args)
 		{
 			for (Field field : this.getClass().getDeclaredFields())
@@ -198,8 +208,30 @@ public abstract class AProgramArguments
 					.if_(argument -> this.validate(arg, args, argument));
 			}
 		}
+		
+		for (Field field : this.getClass().getDeclaredFields())
+		{
+			Opt.of(field.getAnnotation(Argument.class)).if_(argument -> validate(args, argument));
+		}
+		
+		for (Method method : this.getClass().getDeclaredMethods())
+		{
+			Opt.of(method.getAnnotation(Argument.class)).if_(argument -> validate(args, argument));
+		}
 	}
-
+	
+	private final void validate(List<String> args, Argument argument)
+	{
+		String	s		= Argument.requiresMinusAtIdentifier ? "-" : "";
+		String	message	= "The argument \"%s%s\" is a required argument!\n";
+		if (argument.isRequired() && !args.contains(argument.name()))
+		{
+			System.out.printf(message, s, argument.name());
+			this.printInfo();
+			System.exit(-1);
+		}
+	}
+	
 	private final void validate(String arg, List<String> args, Argument argument)
 	{
 		String s = Argument.requiresMinusAtIdentifier ? "-" : "";
@@ -209,9 +241,11 @@ public abstract class AProgramArguments
 			{
 				if (!args.contains(required))
 				{
-					System.out.println("The argument \"" + s + arg + "\" requires the Argument \"" + s + required + "\" to be supplied!");
+					String message = "The argument \"%s%s\" requires the argument \"%s%s\" to be supplied!\n";
+					System.out.printf(message, s, arg, s, required);
 					this.printInfo();
-//					Logger.trace("ArgsManager: Terminating application! - required Argument not supplied!");
+					// Logger.trace("ArgsManager: Terminating application! - required Argument not
+					// supplied!");
 					System.exit(-1);
 				}
 			}
@@ -219,34 +253,34 @@ public abstract class AProgramArguments
 			{
 				if (args.contains(excluded))
 				{
-					System.out.println("The argument \"" + s + arg + "\" and the Argument \"" + s + excluded + "\" exclude each other!");
+					String message = "The argument \"%s%s\" and the argument \"%s%s\" exclude each other!\n";
+					System.out.printf(message, s, arg, s, excluded);
 					this.printInfo();
-//					Logger.trace("ArgsManager: Terminating application! - excluded Argument supplied!");
+					// Logger.trace("ArgsManager: Terminating application! - excluded Argument
+					// supplied!");
 					System.exit(-1);
 				}
 			}
 		}
 	}
-
+	
 	public final void printInfo()
 	{
-//		Logger.info("ArgsManager: Printing program-argument info to console.");
+		// Logger.info("ArgsManager: Printing program-argument info to console.");
 		System.out.println(this.programInfo + "\n");
 		String s = Argument.requiresMinusAtIdentifier ? "-" : "";
 		for (Field field : this.getClass().getDeclaredFields())
 		{
 			Opt.of(field.getAnnotation(Argument.class))
-				.if_(argument ->
-					System.out.println(s + argument.name() + "\t" + argument.info()));
+				.if_(argument -> System.out.println(s + argument.name() + "\t" + argument.info()));
 		}
 		for (Method method : this.getClass().getDeclaredMethods())
 		{
 			Opt.of(method.getAnnotation(Argument.class))
-				.if_(argument ->
-					System.out.println(s + argument.name() + "\t" + argument.info()));
+				.if_(argument -> System.out.println(s + argument.name() + "\t" + argument.info()));
 		}
 	}
-
+	
 	/**
 	 * Call this method only in {@link #addAllParser()}!
 	 * 
@@ -257,14 +291,14 @@ public abstract class AProgramArguments
 	protected static final <T> void addParser(Class<T> name, Function<Iterator<String>, T> parser)
 	{
 		allParser.put(name, parser);
-//		Logger.info("ArgsManager: added parser for " + name);
+		// Logger.info("ArgsManager: added parser for " + name);
 	}
-
-	private List<String> inject(String [] args)
+	
+	private List<String> inject(String[] args)
 	{
-//		Logger.info("ArgsManager: Parsing arguments and injecting into fields.");
-		List<String> keys = new LinkedList<>();
-		List<String> arguments = Arrays.asList(args);
+		// Logger.info("ArgsManager: Parsing arguments and injecting into fields.");
+		List<String>	keys		= new LinkedList<>();
+		List<String>	arguments	= Arrays.asList(args);
 		for (Iterator<String> iterator = arguments.iterator(); iterator.hasNext();)
 		{
 			String arg = iterator.next();
@@ -283,16 +317,17 @@ public abstract class AProgramArguments
 			}
 			if (!hasArg)
 			{
-				throw new IllegalArgumentException("Unknown Argument: " + (Argument.requiresMinusAtIdentifier ? "-" : "") + arg);
+				throw new IllegalArgumentException(
+					"Unknown Argument: " + (Argument.requiresMinusAtIdentifier ? "-" : "") + arg);
 			}
 			keys.add(arg);
 		}
 		return keys;
 	}
-
+	
 	private boolean injectFields(String arg, Iterator<String> iterator)
 	{
-		Field [] fields = this.getClass().getDeclaredFields();
+		Field[] fields = this.getClass().getDeclaredFields();
 		for (Field field : fields)
 		{
 			if (field.isAnnotationPresent(Argument.class))
@@ -306,14 +341,16 @@ public abstract class AProgramArguments
 						if (field.getType() != boolean.class)
 						{
 							Object o = Opt.of(allParser.get(field.getType()))
-								.map(parser -> parser.apply(iterator)).get(() -> null);
-							if(o != null)
+								.map(parser -> parser.apply(iterator))
+								.get(() -> null);
+							if (o != null)
 							{
 								field.set(this, o);
 							}
 							else
 							{
-								throw new NoSuchElementException("Couldn't find a parser for " + field.getType() + "! Please register one.");
+								throw new NoSuchElementException(
+									"Couldn't find a parser for " + field.getType() + "! Please register one.");
 							}
 						}
 						else
@@ -324,7 +361,7 @@ public abstract class AProgramArguments
 					}
 					catch (IllegalArgumentException | IllegalAccessException e)
 					{
-//						Logger.error(e);
+						// Logger.error(e);
 						e.printStackTrace();
 					}
 				}
@@ -332,10 +369,10 @@ public abstract class AProgramArguments
 		}
 		return false;
 	}
-
+	
 	private boolean injectMethods(String arg, Iterator<String> iterator)
 	{
-		Method [] methods = this.getClass().getDeclaredMethods();
+		Method[] methods = this.getClass().getDeclaredMethods();
 		for (Method method : methods)
 		{
 			if (method.isAnnotationPresent(Argument.class))
@@ -346,24 +383,25 @@ public abstract class AProgramArguments
 					method.setAccessible(true);
 					try
 					{
-						Class<?> [] paramTypes = method.getParameterTypes();
-						Object [] parameter = new Object [paramTypes.length];
+						Class<?>[]	paramTypes	= method.getParameterTypes();
+						Object[]	parameter	= new Object[paramTypes.length];
 						for (int i = 0; i < paramTypes.length; i++)
 						{
 							final int index = i;
 							Opt.of(allParser.get(paramTypes[index]))
 								.if_(parser -> parameter[index] = parser.apply(iterator))
 								.else_(() ->
-									{
-										throw new NoSuchElementException("Couldn't find a parser for " + paramTypes[index] + "! Please register one.");
-									});
+								{
+									throw new NoSuchElementException(
+										"Couldn't find a parser for " + paramTypes[index] + "! Please register one.");
+								});
 						}
 						method.invoke(this, parameter);
 						return true;
 					}
 					catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 					{
-//						Logger.error(e);
+						// Logger.error(e);
 						e.printStackTrace();
 						System.exit(-1);
 					}
@@ -372,7 +410,7 @@ public abstract class AProgramArguments
 		}
 		return false;
 	}
-
+	
 	public static final void setCollectionDelimiter(String delimiter)
 	{
 		AProgramArguments.delimiter = delimiter;
