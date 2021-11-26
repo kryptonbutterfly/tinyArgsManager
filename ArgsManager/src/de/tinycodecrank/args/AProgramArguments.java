@@ -381,10 +381,10 @@ public abstract class AProgramArguments
 				if (argument.name().equals(arg))
 				{
 					method.setAccessible(true);
+					Class<?>[]	paramTypes	= method.getParameterTypes();
+					Object[]	parameter	= new Object[paramTypes.length];
 					try
 					{
-						Class<?>[]	paramTypes	= method.getParameterTypes();
-						Object[]	parameter	= new Object[paramTypes.length];
 						for (int i = 0; i < paramTypes.length; i++)
 						{
 							final int index = i;
