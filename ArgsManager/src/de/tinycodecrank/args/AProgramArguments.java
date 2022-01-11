@@ -19,11 +19,17 @@ public abstract class AProgramArguments
 {
 	private static final HashMap<Class<?>, Function<Iterator<String>, ?>>	allParser	= new HashMap<>();
 	private String															programInfo	= "";
-	private static String													delimiter	= "\\|";
+	private final String													delimiter;
 	
 	protected AProgramArguments(String[] args, String programInfo)
 	{
-		this.programInfo = programInfo;
+		this(args, programInfo, ";");
+	}
+	
+	protected AProgramArguments(String[] args, String programInfo, String delimiter)
+	{
+		this.delimiter		= delimiter;
+		this.programInfo	= programInfo;
 		// Logger.info("ArgsManager: adding default parser.");
 		this.addStandardParser();
 		// Logger.info("ArgsManager: adding custom parser.");
@@ -409,10 +415,5 @@ public abstract class AProgramArguments
 			}
 		}
 		return false;
-	}
-	
-	public static final void setCollectionDelimiter(String delimiter)
-	{
-		AProgramArguments.delimiter = delimiter;
 	}
 }
