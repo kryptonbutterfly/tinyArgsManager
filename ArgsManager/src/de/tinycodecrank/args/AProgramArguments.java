@@ -1,8 +1,8 @@
 package de.tinycodecrank.args;
 
-import java.lang.reflect.Field;
+import static de.tinycodecrank.math.utils.range.Range.*;
+
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,10 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import de.tinycodecrank.monads.Opt;
-
-//import de.dummy.logger.Logger;
 
 public abstract class AProgramArguments
 {
@@ -82,8 +81,8 @@ public abstract class AProgramArguments
 		{
 			if (value.hasNext())
 			{
-				String[]	split	= value.next().split(delimiter);
-				long[]		result	= new long[split.length];
+				final var	split	= value.next().split(delimiter);
+				final var	result	= new long[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Long.parseLong(split[i]);
@@ -96,8 +95,8 @@ public abstract class AProgramArguments
 		{
 			if (value.hasNext())
 			{
-				String[]	split	= value.next().split(delimiter);
-				int[]		result	= new int[split.length];
+				final var	split	= value.next().split(delimiter);
+				final var	result	= new int[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Integer.parseInt(split[i]);
@@ -110,8 +109,8 @@ public abstract class AProgramArguments
 		{
 			if (value.hasNext())
 			{
-				String[]	split	= value.next().split(delimiter);
-				short[]		result	= new short[split.length];
+				final var	split	= value.next().split(delimiter);
+				final var	result	= new short[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Short.parseShort(split[i]);
@@ -124,8 +123,8 @@ public abstract class AProgramArguments
 		{
 			if (value.hasNext())
 			{
-				String[]	split	= value.next().split(delimiter);
-				char[]		result	= new char[split.length];
+				final var	split	= value.next().split(delimiter);
+				final var	result	= new char[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = split[i].charAt(0);
@@ -138,8 +137,8 @@ public abstract class AProgramArguments
 		{
 			if (value.hasNext())
 			{
-				String[]	split	= value.next().split(delimiter);
-				byte[]		result	= new byte[split.length];
+				final var	split	= value.next().split(delimiter);
+				final var	result	= new byte[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Byte.parseByte(split[i]);
@@ -152,8 +151,8 @@ public abstract class AProgramArguments
 		{
 			if (value.hasNext())
 			{
-				String[]	split	= value.next().split(delimiter);
-				boolean[]	result	= new boolean[split.length];
+				final var	split	= value.next().split(delimiter);
+				final var	result	= new boolean[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Boolean.parseBoolean(split[i]);
@@ -166,8 +165,8 @@ public abstract class AProgramArguments
 		{
 			if (value.hasNext())
 			{
-				String[]	split	= value.next().split(delimiter);
-				double[]	result	= new double[split.length];
+				final var	split	= value.next().split(delimiter);
+				final var	result	= new double[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Double.parseDouble(split[i]);
@@ -180,8 +179,8 @@ public abstract class AProgramArguments
 		{
 			if (value.hasNext())
 			{
-				String[]	split	= value.next().split(delimiter);
-				float[]		result	= new float[split.length];
+				final var	split	= value.next().split(delimiter);
+				final var	result	= new float[split.length];
 				for (int i = 0; i < split.length; i++)
 				{
 					result[i] = Float.parseFloat(split[i]);
@@ -201,26 +200,26 @@ public abstract class AProgramArguments
 	private final void validate(List<String> args)
 	{
 		// Logger.info("ArgsManager: Validating parsed program-arguments.");
-		for (String arg : args)
+		for (final var arg : args)
 		{
-			for (Field field : this.getClass().getDeclaredFields())
+			for (final var field : this.getClass().getDeclaredFields())
 			{
 				Opt.of(field.getAnnotation(Argument.class))
 					.if_(argument -> this.validate(arg, args, argument));
 			}
-			for (Method method : this.getClass().getDeclaredMethods())
+			for (final var method : this.getClass().getDeclaredMethods())
 			{
 				Opt.of(method.getAnnotation(Argument.class))
 					.if_(argument -> this.validate(arg, args, argument));
 			}
 		}
 		
-		for (Field field : this.getClass().getDeclaredFields())
+		for (final var field : this.getClass().getDeclaredFields())
 		{
 			Opt.of(field.getAnnotation(Argument.class)).if_(argument -> validate(args, argument));
 		}
 		
-		for (Method method : this.getClass().getDeclaredMethods())
+		for (final var method : this.getClass().getDeclaredMethods())
 		{
 			Opt.of(method.getAnnotation(Argument.class)).if_(argument -> validate(args, argument));
 		}
@@ -228,8 +227,8 @@ public abstract class AProgramArguments
 	
 	private final void validate(List<String> args, Argument argument)
 	{
-		String	s		= Argument.requiresMinusAtIdentifier ? "-" : "";
-		String	message	= "The argument \"%s%s\" is a required argument!\n";
+		final var	s		= Argument.requiresMinusAtIdentifier ? "-" : "";
+		final var	message	= "The argument \"%s%s\" is a required argument!\n";
 		if (argument.isRequired() && !args.contains(argument.name()))
 		{
 			System.out.printf(message, s, argument.name());
@@ -240,14 +239,14 @@ public abstract class AProgramArguments
 	
 	private final void validate(String arg, List<String> args, Argument argument)
 	{
-		String s = Argument.requiresMinusAtIdentifier ? "-" : "";
+		final var s = Argument.requiresMinusAtIdentifier ? "-" : "";
 		if (argument.name().equals(arg))
 		{
-			for (String required : argument.requires())
+			for (final var required : argument.requires())
 			{
 				if (!args.contains(required))
 				{
-					String message = "The argument \"%s%s\" requires the argument \"%s%s\" to be supplied!\n";
+					final var message = "The argument \"%s%s\" requires the argument \"%s%s\" to be supplied!\n";
 					System.out.printf(message, s, arg, s, required);
 					this.printInfo();
 					// Logger.trace("ArgsManager: Terminating application! - required Argument not
@@ -255,11 +254,11 @@ public abstract class AProgramArguments
 					System.exit(-1);
 				}
 			}
-			for (String excluded : argument.excludes())
+			for (final var excluded : argument.excludes())
 			{
 				if (args.contains(excluded))
 				{
-					String message = "The argument \"%s%s\" and the argument \"%s%s\" exclude each other!\n";
+					final var message = "The argument \"%s%s\" and the argument \"%s%s\" exclude each other!\n";
 					System.out.printf(message, s, arg, s, excluded);
 					this.printInfo();
 					// Logger.trace("ArgsManager: Terminating application! - excluded Argument
@@ -274,13 +273,13 @@ public abstract class AProgramArguments
 	{
 		// Logger.info("ArgsManager: Printing program-argument info to console.");
 		System.out.println(this.programInfo + "\n");
-		String s = Argument.requiresMinusAtIdentifier ? "-" : "";
-		for (Field field : this.getClass().getDeclaredFields())
+		final var s = Argument.requiresMinusAtIdentifier ? "-" : "";
+		for (final var field : this.getClass().getDeclaredFields())
 		{
 			Opt.of(field.getAnnotation(Argument.class))
 				.if_(argument -> System.out.println(s + argument.name() + "\t" + argument.info()));
 		}
-		for (Method method : this.getClass().getDeclaredMethods())
+		for (final var method : this.getClass().getDeclaredMethods())
 		{
 			Opt.of(method.getAnnotation(Argument.class))
 				.if_(argument -> System.out.println(s + argument.name() + "\t" + argument.info()));
@@ -303,11 +302,11 @@ public abstract class AProgramArguments
 	private List<String> inject(String[] args)
 	{
 		// Logger.info("ArgsManager: Parsing arguments and injecting into fields.");
-		List<String>	keys		= new LinkedList<>();
-		List<String>	arguments	= Arrays.asList(args);
-		for (Iterator<String> iterator = arguments.iterator(); iterator.hasNext();)
+		final List<String>	keys		= new LinkedList<>();
+		final var			arguments	= Arrays.asList(args);
+		for (final var iterator = arguments.iterator(); iterator.hasNext();)
 		{
-			String arg = iterator.next();
+			var arg = iterator.next();
 			if (Argument.requiresMinusAtIdentifier)
 			{
 				if (arg.isEmpty() || arg.charAt(0) != '-')
@@ -333,87 +332,74 @@ public abstract class AProgramArguments
 	
 	private boolean injectFields(String arg, Iterator<String> iterator)
 	{
-		Field[] fields = this.getClass().getDeclaredFields();
-		for (Field field : fields)
-		{
-			if (field.isAnnotationPresent(Argument.class))
+		return Arrays.stream(this.getClass().getDeclaredFields())
+			.filter(field -> field.isAnnotationPresent(Argument.class))
+			.filter(field -> field.getAnnotation(Argument.class).name().equals(arg))
+			.findAny()
+			.filter(field ->
 			{
-				Argument argument = field.getAnnotation(Argument.class);
-				if (argument.name().equals(arg))
+				field.setAccessible(true);
+				final var type = field.getType();
+				try
 				{
-					field.setAccessible(true);
-					try
+					if (type != boolean.class)
 					{
-						if (field.getType() != boolean.class)
-						{
-							Object o = Opt.of(allParser.get(field.getType()))
+						field.set(
+							this,
+							Opt.of(allParser.get(type))
 								.map(parser -> parser.apply(iterator))
-								.get(() -> null);
-							if (o != null)
-							{
-								field.set(this, o);
-							}
-							else
-							{
-								throw new NoSuchElementException(
-									"Couldn't find a parser for " + field.getType() + "! Please register one.");
-							}
-						}
-						else
-						{
-							field.set(this, true);
-						}
-						return true;
+								.getThrows(missingParser(type)));
 					}
-					catch (IllegalArgumentException | IllegalAccessException e)
+					else
 					{
-						// Logger.error(e);
-						e.printStackTrace();
+						field.set(this, true);
 					}
+					return true;
 				}
-			}
-		}
-		return false;
+				catch (IllegalArgumentException | IllegalAccessException e)
+				{
+					e.printStackTrace();
+				}
+				return false;
+			})
+			.isPresent();
 	}
 	
 	private boolean injectMethods(String arg, Iterator<String> iterator)
 	{
-		Method[] methods = this.getClass().getDeclaredMethods();
-		for (Method method : methods)
-		{
-			if (method.isAnnotationPresent(Argument.class))
+		return Arrays.stream(this.getClass().getDeclaredMethods())
+			.filter(method -> method.isAnnotationPresent(Argument.class))
+			.filter(method -> method.getAnnotation(Argument.class).name().equals(arg))
+			.findAny()
+			.filter(method ->
 			{
-				Argument argument = method.getAnnotation(Argument.class);
-				if (argument.name().equals(arg))
+				method.setAccessible(true);
+				final var paramTypes = method.getParameterTypes();
+				final var parameter	= new Object[paramTypes.length];
+				for (final var ie : range(paramTypes))
 				{
-					method.setAccessible(true);
-					Class<?>[]	paramTypes	= method.getParameterTypes();
-					Object[]	parameter	= new Object[paramTypes.length];
-					try
-					{
-						for (int i = 0; i < paramTypes.length; i++)
-						{
-							final int index = i;
-							Opt.of(allParser.get(paramTypes[index]))
-								.if_(parser -> parameter[index] = parser.apply(iterator))
-								.else_(() ->
-								{
-									throw new NoSuchElementException(
-										"Couldn't find a parser for " + paramTypes[index] + "! Please register one.");
-								});
-						}
-						method.invoke(this, parameter);
-						return true;
-					}
-					catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
-					{
-						// Logger.error(e);
-						e.printStackTrace();
-						System.exit(-1);
-					}
+					parameter[ie.index()] = Opt.of(allParser.get(ie.element()))
+						.map(parser -> parser.apply(iterator))
+						.getThrows(missingParser(ie.element()));
 				}
-			}
-		}
-		return false;
+				try
+				{
+					method.invoke(this, parameter);
+					return true;
+				}
+				catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+				{
+					e.printStackTrace();
+					System.exit(-1);
+				}
+				return false;
+			})
+			.isPresent();
+	}
+	
+	private static Supplier<NoSuchElementException> missingParser(Object target)
+	{
+		return () -> new NoSuchElementException(
+			"Couldn't find a parser for %s! Please register one.".formatted(target));
 	}
 }
