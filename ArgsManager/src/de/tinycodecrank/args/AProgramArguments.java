@@ -16,9 +16,9 @@ import de.tinycodecrank.monads.Opt;
 
 public abstract class AProgramArguments
 {
-	private static final HashMap<Class<?>, Function<Iterator<String>, ?>>	allParser	= new HashMap<>();
-	private String															programInfo	= "";
-	private final String													delimiter;
+	private final HashMap<Class<?>, Function<Iterator<String>, ?>>	allParser	= new HashMap<>();
+	private String													programInfo	= "";
+	private final String											delimiter;
 	
 	protected AProgramArguments(String[] args, String programInfo)
 	{
@@ -33,6 +33,7 @@ public abstract class AProgramArguments
 		this.addStandardParser();
 		// Logger.info("ArgsManager: adding custom parser.");
 		this.addAllParser();
+		this.setDefaults();
 		try
 		{
 			this.validate(this.inject(args));
@@ -197,6 +198,12 @@ public abstract class AProgramArguments
 	 */
 	protected abstract void addAllParser();
 	
+	/**
+	 * Override this method to set default values for your arguments.
+	 */
+	protected void setDefaults()
+	{};
+	
 	private final void validate(List<String> args)
 	{
 		// Logger.info("ArgsManager: Validating parsed program-arguments.");
@@ -293,7 +300,7 @@ public abstract class AProgramArguments
 	 *            The type the parser returns
 	 * @param parser
 	 */
-	protected static final <T> void addParser(Class<T> name, Function<Iterator<String>, T> parser)
+	protected final <T> void addParser(Class<T> name, Function<Iterator<String>, T> parser)
 	{
 		allParser.put(name, parser);
 		// Logger.info("ArgsManager: added parser for " + name);
