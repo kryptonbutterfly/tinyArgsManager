@@ -1,8 +1,8 @@
-module ArgsManager
+module de.tinycodecrank.ArgsManager
 {
 	exports de.tinycodecrank.args;
 	
-	requires Functional;
-	requires Monads;
-	requires mathUtils;
+	requires de.tinycodecrank.Functional;
+	requires de.tinycodecrank.Monads;
+	requires de.tinycodecrank.mathUtils;
 }
