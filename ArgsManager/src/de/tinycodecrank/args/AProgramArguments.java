@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import de.tinycodecrank.monads.Opt;
+import de.tinycodecrank.monads.opt.Opt;
 
 public abstract class AProgramArguments
 {
