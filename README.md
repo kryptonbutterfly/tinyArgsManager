@@ -1,4 +1,5 @@
 # tinyArgsManager
+A Program args parser.
 
 ## Downloads
 java version | library version | Download
