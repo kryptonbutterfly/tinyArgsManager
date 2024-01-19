@@ -1,4 +1,4 @@
-package de.tinycodecrank.args;
+package kryptonbutterfly.args;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

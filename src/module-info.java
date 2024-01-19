@@ -1,8 +1,8 @@
-module de.tinycodecrank.ArgsManager
+module kryptonbutterfly.ArgsManager
 {
-	exports de.tinycodecrank.args;
+	exports kryptonbutterfly.args;
 	
-	requires de.tinycodecrank.Functional;
-	requires de.tinycodecrank.Monads;
-	requires de.tinycodecrank.mathUtils;
+	requires kryptonbutterfly.Functional;
+	requires kryptonbutterfly.Monads;
+	requires kryptonbutterfly.mathUtils;
 }

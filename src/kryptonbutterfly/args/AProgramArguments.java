@@ -1,6 +1,6 @@
-package de.tinycodecrank.args;
+package kryptonbutterfly.args;
 
-import static de.tinycodecrank.math.utils.range.Range.*;
+import static kryptonbutterfly.math.utils.range.Range.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import de.tinycodecrank.monads.opt.Opt;
+import kryptonbutterfly.monads.opt.Opt;
 
 public abstract class AProgramArguments
 {
@@ -70,16 +70,14 @@ public abstract class AProgramArguments
 		addParser(boolean.class, value -> Boolean.parseBoolean(value.next()));
 		addParser(double.class, value -> Double.parseDouble(value.next()));
 		addParser(float.class, value -> Float.parseFloat(value.next()));
-		addParser(String[].class, value ->
-		{
+		addParser(String[].class, value -> {
 			if (value.hasNext())
 			{
 				return value.next().split(delimiter);
 			}
 			return new String[0];
 		});
-		addParser(long[].class, value ->
-		{
+		addParser(long[].class, value -> {
 			if (value.hasNext())
 			{
 				final var	split	= value.next().split(delimiter);
@@ -92,8 +90,7 @@ public abstract class AProgramArguments
 			}
 			return new long[0];
 		});
-		addParser(int[].class, value ->
-		{
+		addParser(int[].class, value -> {
 			if (value.hasNext())
 			{
 				final var	split	= value.next().split(delimiter);
@@ -106,8 +103,7 @@ public abstract class AProgramArguments
 			}
 			return new int[0];
 		});
-		addParser(short[].class, value ->
-		{
+		addParser(short[].class, value -> {
 			if (value.hasNext())
 			{
 				final var	split	= value.next().split(delimiter);
@@ -120,8 +116,7 @@ public abstract class AProgramArguments
 			}
 			return new short[0];
 		});
-		addParser(char[].class, value ->
-		{
+		addParser(char[].class, value -> {
 			if (value.hasNext())
 			{
 				final var	split	= value.next().split(delimiter);
@@ -134,8 +129,7 @@ public abstract class AProgramArguments
 			}
 			return new char[0];
 		});
-		addParser(byte[].class, value ->
-		{
+		addParser(byte[].class, value -> {
 			if (value.hasNext())
 			{
 				final var	split	= value.next().split(delimiter);
@@ -148,8 +142,7 @@ public abstract class AProgramArguments
 			}
 			return new byte[0];
 		});
-		addParser(boolean[].class, value ->
-		{
+		addParser(boolean[].class, value -> {
 			if (value.hasNext())
 			{
 				final var	split	= value.next().split(delimiter);
@@ -162,8 +155,7 @@ public abstract class AProgramArguments
 			}
 			return new boolean[0];
 		});
-		addParser(double[].class, value ->
-		{
+		addParser(double[].class, value -> {
 			if (value.hasNext())
 			{
 				final var	split	= value.next().split(delimiter);
@@ -176,8 +168,7 @@ public abstract class AProgramArguments
 			}
 			return new double[0];
 		});
-		addParser(float[].class, value ->
-		{
+		addParser(float[].class, value -> {
 			if (value.hasNext())
 			{
 				final var	split	= value.next().split(delimiter);
