@@ -9,15 +9,29 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD, ElementType.METHOD })
 public @interface Argument
 {
-	static boolean requiresMinusAtIdentifier = true;
-	
+	/**
+	 * @return The Argument name.
+	 */
 	String name();
 	
+	/**
+	 * @return The arguments description.
+	 */
 	String info();
 	
+	/**
+	 * @return All the arguments that are required if this argument is being
+	 *         supplied.
+	 */
 	String[] requires() default {};
 	
+	/**
+	 * @return All the arguments that must not be supplied if this one is.
+	 */
 	String[] excludes() default {};
 	
+	/**
+	 * @return Whether this argument is always required.
+	 */
 	boolean isRequired() default false;
 }
