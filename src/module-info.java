@@ -5,4 +5,6 @@ module kryptonbutterfly.ArgsManager
 	requires kryptonbutterfly.Functional;
 	requires kryptonbutterfly.Monads;
 	requires kryptonbutterfly.mathUtils;
+	
+	requires org.junit.jupiter.api;
 }
