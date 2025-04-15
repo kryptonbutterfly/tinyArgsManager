@@ -1,3 +1,5 @@
+<img width="82" align="left" src="https://raw.githubusercontent.com/kryptonbutterfly/tinyArgsManager/master/icon.svg"/>
+
 # tinyArgsParser [![Maven Package](https://github.com/kryptonbutterfly/tinyArgsManager/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/kryptonbutterfly/tinyArgsManager/actions/workflows/maven-publish.yml)
 A Program args parser.
 
