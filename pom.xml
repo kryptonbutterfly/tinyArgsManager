@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>kryptonbutterfly</groupId>
 	<artifactId>tiny-args-parser</artifactId>
-	<version>3.0.0</version>
+	<version>3.0.1</version>
 	<name>ArgsManager</name>
 
 	<distributionManagement>
@@ -64,6 +64,9 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.1.2</version>
 				<configuration>
+					<includes>
+						<include>test/**/*.java</include>
+					</includes>
 					<useModulePath>false</useModulePath>
 				</configuration>
 			</plugin>
